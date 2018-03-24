@@ -1,0 +1,66 @@
+ext {
+    //Android
+    androidBuildToolsVersion = "26.0.2"
+    androidMinSdkVersion = 16
+    androidTargetSdkVersion = 26
+    androidCompileSdkVersion = 26
+
+    //Libraries
+    recyclerViewVersion = '25.2.0'
+    appCompatVersion = '26.0.2'
+    designVersion = '26.0.2'
+    rxJavaVersion = '2.0.5'
+    rxAndroidVersion = '2.0.1'
+    retrofit2rxJava2Version = '1.0.0'
+    retrofit2Version = '2.2.0'
+    retrofit2GsonConverterVersion = '2.1.0'
+    dagger2Version = '2.11'
+    dagger2CompilerVersion = '2.11'
+    javaxAnnotationVersion = "1.0"
+    javaxInjectVersion = "1"
+    archLifecycleVersion = "1.0.0"
+    archRoomVersion = "1.0.0"
+    archRoomRxjavaVersion = "1.0.0"
+
+    //Testing
+    robolectricVersion = '3.3.2'
+    jUnitVersion = '4.12'
+    assertJVersion = '1.7.1'
+    mockitoVersion = '1.9.5'
+    hamcrestVersion = '1.3'
+    powerMockito = '1.6.2'
+    espressoVersion = '2.0'
+    testingSupportLibVersion = '0.1'
+
+    domainDependencies = [
+           rxjava:                  "io.reactivex.rxjava2:rxjava:${rxJavaVersion}",
+           rxAndroid:         "io.reactivex.rxjava2:rxandroid:${rxAndroidVersion}",
+           retrofit:                "com.squareup.retrofit2:retrofit:${retrofit2Version}",
+           retrofitConverterGson:   "com.squareup.retrofit2:converter-gson:${retrofit2GsonConverterVersion}",
+           retrofitAdapter:         "com.squareup.retrofit2:adapter-rxjava2:${retrofit2Version}",
+
+           archLifecyle:            "android.arch.lifecycle:extensions:${archLifecycleVersion}",
+           archRoom:                "android.arch.persistence.room:runtime:${archRoomVersion}",
+           archLifecycleCompiler:   "android.arch.lifecycle:compiler:${archLifecycleVersion}",
+           archRoomCompiler:        "android.arch.persistence.room:compiler:${archRoomVersion}",
+           archRoomRxJava:          "android.arch.persistence.room:rxjava2:${archRoomRxjavaVersion}",
+
+           javaxAnnotation:         "javax.annotation:jsr250-api:${javaxAnnotationVersion}",
+           javaxInject:             "javax.inject:javax.inject:${javaxInjectVersion}",
+
+           daggerProcessor:         "com.google.dagger:dagger-android-processor:${dagger2CompilerVersion}",
+           daggerAndroidSupport:    "com.google.dagger:dagger-android-support:${dagger2CompilerVersion}",
+           dagger:                  "com.google.dagger:dagger-android:${dagger2Version}",
+           daggerCompiler:          "com.google.dagger:dagger-compiler:${dagger2Version}"
+    ]
+
+    testDependencies = [
+            junit:          "junit:junit:${jUnitVersion}",
+            robolectric:    "org.robolectric:robolectric:${robolectricVersion}",
+            robolectricshadow:    "org.robolectric:shadows-support-v4:${robolectricVersion}",
+            mockito:            "org.mockito:mockito-all:${mockitoVersion}",
+            hamcrest:           "org.hamcrest:hamcrest-all:${hamcrestVersion}",
+            powermock_junit:    "org.powermock:powermock-module-junit4:${powerMockito}",
+            powermock_api:      "org.powermock:powermock-api-mockito:${powerMockito}"
+    ]
+}

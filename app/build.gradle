@@ -1,0 +1,71 @@
+apply plugin: 'com.android.application'
+
+android {
+    def globalConfiguration = rootProject.extensions.getByName("ext")
+
+
+
+    compileSdkVersion globalConfiguration["androidCompileSdkVersion"]
+    buildToolsVersion globalConfiguration["androidBuildToolsVersion"]
+
+    defaultConfig {
+        applicationId "com.levo017.crossoverpractice"
+        minSdkVersion globalConfiguration["androidMinSdkVersion"]
+        targetSdkVersion globalConfiguration["androidTargetSdkVersion"]
+        multiDexEnabled = true
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    def domainDependencies = rootProject.ext.domainDependencies
+
+    implementation 'com.android.support:design:26.1.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    provided domainDependencies.javaxAnnotation
+
+    compile domainDependencies.javaxInject
+    compile domainDependencies.rxjava
+    compile domainDependencies.rxAndroid
+    compile domainDependencies.retrofit
+    compile domainDependencies.retrofitAdapter
+    compile domainDependencies.retrofitConverterGson
+    compile domainDependencies.archRoom
+    compile domainDependencies.archLifecyle
+    compile domainDependencies.archRoomRxJava
+
+    annotationProcessor  domainDependencies.daggerProcessor
+    annotationProcessor  domainDependencies.daggerCompiler
+    annotationProcessor  domainDependencies.archRoomCompiler
+    compile domainDependencies.daggerAndroidSupport
+    compile domainDependencies.dagger
+
+    testCompile testDependencies.robolectric
+    testCompile testDependencies.robolectricshadow
+    testCompile testDependencies.mockito
+    testCompile testDependencies.hamcrest
+    testCompile testDependencies.powermock_junit
+    testCompile testDependencies.powermock_api
+    testCompile testDependencies.junit
+    testCompile 'com.github.fabioCollini.daggermock:daggermock:0.8.4'
+
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.android.support:appcompat-v7:26.1.0'
+
+    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+}
