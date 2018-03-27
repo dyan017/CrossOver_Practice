@@ -1,5 +1,7 @@
 package com.levo017.crossoverpractice.injection;
 
+import android.app.Application;
+
 import dagger.android.AndroidInjector;
 import dagger.android.HasActivityInjector;
 import dagger.android.support.DaggerApplication;
@@ -18,3 +20,4 @@ public class CrossoverPracticeApplication extends DaggerApplication implements H
     }
 
 }
+

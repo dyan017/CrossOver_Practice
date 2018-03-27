@@ -16,3 +16,5 @@ public class SessionInvite {
     @Relation(entityColumn="SessionId", parentColumn ="Id" )
     List<Invite> invite;
 }
+
+

@@ -9,6 +9,6 @@ import android.support.annotation.NonNull;
  */
 @Entity
 public class Topic {
-    @PrimaryKey @NonNull
-    public String TopicId;
+    @PrimaryKey(autoGenerate = true) @NonNull
+    public int TopicId;
 }

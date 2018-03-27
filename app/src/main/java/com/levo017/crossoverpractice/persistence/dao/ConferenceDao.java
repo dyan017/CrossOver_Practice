@@ -7,6 +7,7 @@ import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
 import com.levo017.crossoverpractice.models.Conference;
+import com.levo017.crossoverpractice.models.Session;
 import com.levo017.crossoverpractice.persistence.relationships.SessionsInConference;
 import com.levo017.crossoverpractice.persistence.relationships.ConferenceTopicRelationship;
 
@@ -23,29 +24,32 @@ import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
 @Dao
 public interface ConferenceDao {
     @Insert(onConflict = REPLACE)
-    void insertConference(Conference conference);
+    Long insertConference(Conference conference);
 
     @Insert(onConflict = REPLACE)
     void addTopic(ConferenceTopicRelationship relationship);
 
+    @Insert(onConflict = REPLACE)
+    void addSession(Session session);
+
     @Query("SELECT Conference.* FROM Conference")
-    List<Conference> queryConference();
+    Flowable<Conference> queryConference();
 
     @Query("SELECT Conference.* FROM Conference\n" +
             "WHERE Conference.ConferenceId=:conferenceId")
-    List<Conference> queryConference(String conferenceId);
+    Maybe<Conference> queryConference(int conferenceId);
 
     @Query("SELECT Conference.* FROM Conference\n" +
             "INNER JOIN conference_topic_join ON \n" +
             "conference_topic_join.conferenceId = Conference.conferenceId \n" +
             "WHERE conference_topic_join.topicId=:topicId")
-    Flowable<List<Conference>> queryConferenceForTopic(String topicId);
+    Flowable<Conference> queryConferenceForTopic(int topicId);
 
     @Query("SELECT * FROM Conference")
     Flowable<List<SessionsInConference>> queryConferenceWithSessions();
 
     @Query("SELECT * FROM Conference Where ConferenceId=:conferenceId")
-    Maybe<SessionsInConference> queryConferenceWithSessions(String conferenceId);
+    Maybe<SessionsInConference> queryConferenceWithSessions(int conferenceId);
 
     @Delete
     void removeTopic(ConferenceTopicRelationship mapping);

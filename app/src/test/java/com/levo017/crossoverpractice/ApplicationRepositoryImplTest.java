@@ -1,25 +1,19 @@
 
 package com.levo017.crossoverpractice;
 
-import com.levo017.crossoverpractice.injection.ApplicationComponent;
 import com.levo017.crossoverpractice.models.Conference;
-import com.levo017.crossoverpractice.old.JUnitDaggerMockRule;
 import com.levo017.crossoverpractice.persistence.AppDatabase;
 import com.levo017.crossoverpractice.persistence.dao.ConferenceDao;
 import com.levo017.crossoverpractice.persistence.dao.InviteDao;
 import com.levo017.crossoverpractice.persistence.dao.SessionDao;
 import com.levo017.crossoverpractice.persistence.dao.TopicDao;
-import com.levo017.crossoverpractice.repositories.ApplicationRepository;
 import com.levo017.crossoverpractice.repositories.ApplicationRepositoryImpl;
-import com.levo017.crossoverpractice.ui.MainActivity;
 
-import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
-import it.cosenonjaviste.daggermock.InjectFromComponent;
+import io.reactivex.observers.TestObserver;
 
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -30,8 +24,6 @@ import static org.mockito.Mockito.verify;
  */
 
 public class ApplicationRepositoryImplTest {
-    @Rule public JUnitDaggerMockRule rule = new JUnitDaggerMockRule();
-
     @Mock
     AppDatabase mockDB;
 
@@ -40,14 +32,17 @@ public class ApplicationRepositoryImplTest {
     SessionDao mockSessionDao;
     TopicDao mockTopicDao;
 
-    @InjectFromComponent(MainActivity.class)
     ApplicationRepositoryImpl applicationRepository;
 
     @Test
     public void repositoryAddConference(){
         initialiseMockDB();
+        TestObserver<Void> testObserver;
+        applicationRepository = new ApplicationRepositoryImpl(mockDB);
         Conference conference = new Conference();
-        applicationRepository.addConference(conference);
+        testObserver = applicationRepository.addConference(conference).test();
+        testObserver.assertComplete();
+        testObserver.assertComplete();
         verify(mockConferenceDao, times(1)).insertConference(conference);
     }
 

@@ -33,12 +33,12 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
 )
 public class ConferenceTopicRelationship {
     @NonNull
-    public final String conferenceId;
+    public final int conferenceId;
 
     @NonNull
-    public final String topicId;
+    public final int topicId;
 
-    public ConferenceTopicRelationship(String conferenceId, String topicId){
+    public ConferenceTopicRelationship(int conferenceId, int topicId){
         this.conferenceId = conferenceId;
         this.topicId = topicId;
     }

@@ -26,7 +26,7 @@ public class AssignTopicToConference extends CompletableUseCase<AssignTopicToCon
     }
 
     public class Param {
-        String TopicId;
-        String ConferenceId;
+        int TopicId;
+        int ConferenceId;
     }
 }

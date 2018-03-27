@@ -61,7 +61,7 @@ public class ApplicationRepositoryImpl implements ApplicationRepository {
     }
 
     @Override
-    public Completable addTopicToConference(String conferenceId, String topicId) {
+    public Completable addTopicToConference(int conferenceId, int topicId) {
         ConferenceTopicRelationship relationship = new ConferenceTopicRelationship(conferenceId, topicId);
         return Completable.fromAction(()->conferenceDao.addTopic(relationship));
     }

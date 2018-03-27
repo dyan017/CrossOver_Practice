@@ -17,8 +17,10 @@ public interface UserDao {
     void insertUser(User user);
 
     @Delete
-    void deleteSession(User user);
+    void deleteUser(User user);
 
     @Update
-    void updateSession(User user);
+    void updateUser(User user);
+
+
 }
