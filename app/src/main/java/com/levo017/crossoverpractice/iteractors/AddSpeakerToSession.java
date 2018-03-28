@@ -21,7 +21,7 @@ public class AddSpeakerToSession extends CompletableUseCase<AddSpeakerToSession.
     @Override
     protected Completable buildCompletableUseCase(Param param) {
         //retrieve the Session object
-        return repository.addSpeakerToSession(Integer.toString(param.UserId), Integer.toString(param.SessionId));
+        return repository.addSpeakerToSession(param.UserId, param.SessionId);
     }
 
     public class Param {

@@ -59,5 +59,4 @@ public class TopicDaoTest {
         assertEquals(1, topics.size());
         assertEquals(newId, topics.get(0).TopicId);   //Confirm long returned by insert is the new ID.
     }
-
 }

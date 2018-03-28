@@ -25,7 +25,7 @@ public interface ApplicationRepository {
     public Completable addInvite(Invite invite);
 
     Completable addTopicToConference(int topicId, int conferenceId);
-    Completable addSpeakerToSession(String userId, String sessionId);
+    Completable addSpeakerToSession(int userId, int sessionId);
 
     Single<Conference> loadConferences(String conferenceId);
     Single<Session> loadSessions(String sessionId);

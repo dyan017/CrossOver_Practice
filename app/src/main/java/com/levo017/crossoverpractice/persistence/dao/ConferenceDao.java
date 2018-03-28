@@ -46,7 +46,7 @@ public interface ConferenceDao {
     Flowable<Conference> queryConferenceForTopic(int topicId);
 
     @Query("SELECT * FROM Conference")
-    Flowable<List<SessionsInConference>> queryConferenceWithSessions();
+    Flowable<SessionsInConference> queryConferenceWithSessions();
 
     @Query("SELECT * FROM Conference Where ConferenceId=:conferenceId")
     Maybe<SessionsInConference> queryConferenceWithSessions(int conferenceId);

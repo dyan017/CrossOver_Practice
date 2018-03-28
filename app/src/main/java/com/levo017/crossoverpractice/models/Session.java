@@ -13,6 +13,7 @@ public class Session {
     public Integer Id;
     public String ConferenceId;
     public String TopicId;
-    public String UserId;
+    public int UserId;
     public String InviteId;
+    public String Note;
 }

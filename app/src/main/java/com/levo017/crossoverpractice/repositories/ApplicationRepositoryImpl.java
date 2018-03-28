@@ -67,7 +67,7 @@ public class ApplicationRepositoryImpl implements ApplicationRepository {
     }
 
     @Override
-    public Completable addSpeakerToSession(String userId, String sessionId) {
+    public Completable addSpeakerToSession(int userId, int sessionId) {
         return Completable.fromAction(()->sessionDao.AssignUserToSession(userId, sessionId));
     }
 

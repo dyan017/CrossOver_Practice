@@ -11,4 +11,7 @@ import android.support.annotation.NonNull;
 public class Topic {
     @PrimaryKey(autoGenerate = true) @NonNull
     public int TopicId;
+
+    public String TopicName;
+    public int ProposerId;
 }

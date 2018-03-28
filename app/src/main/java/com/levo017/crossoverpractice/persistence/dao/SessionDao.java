@@ -21,7 +21,7 @@ import io.reactivex.Maybe;
 @Dao
 public abstract class SessionDao {
     @Insert
-    public abstract void insertSession(Session session);
+    public abstract long insertSession(Session session);
 
     @Delete
     public abstract void deleteSession(Session session);
@@ -30,10 +30,12 @@ public abstract class SessionDao {
     public abstract void updateSession(Session session);
 
     @Query("SELECT * FROM Session WHERE Session.Id == :SessionId")
-    public abstract Maybe<Session> querySession(String SessionId);
+    public abstract Maybe<Session> querySession(int SessionId);
 
+    @Query("SELECT * FROM Session")
+    public abstract Flowable<Session> querySessions();
 
-    public Completable AssignUserToSession(String userId, String SessionId){
+    public Completable AssignUserToSession(int userId, int SessionId){
         try{
             return doAssignUserToSession(userId, SessionId);
         } catch (Exception ex){
@@ -42,7 +44,7 @@ public abstract class SessionDao {
     }
 
     @Transaction
-    protected Completable doAssignUserToSession(String userId, String SessionId){
+    protected Completable doAssignUserToSession(int userId, int SessionId){
         querySession(SessionId)
                 .doOnSuccess(session -> {
                        session.UserId = userId;
