@@ -24,7 +24,7 @@ public class SaveUser extends CompletableUseCase {
     }
 
     @Override
-    protected Completable buildCompletableUseCase(Object o) {
+    protected Completable buildUseCase(Object o) {
         return null;
     }
 }

@@ -24,7 +24,7 @@ public class AddConference extends CompletableUseCase<Conference> {
     }
 
     @Override
-    protected Completable buildCompletableUseCase(Conference conference) {
+    protected Completable buildUseCase(Conference conference) {
         return repository.addConference(conference);
     }
 

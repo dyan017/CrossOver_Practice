@@ -11,6 +11,7 @@ import com.levo017.crossoverpractice.persistence.relationships.ConferenceTopicRe
 import java.util.List;
 
 import io.reactivex.Completable;
+import io.reactivex.Maybe;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 
@@ -19,10 +20,10 @@ import io.reactivex.Single;
  */
 
 public interface ApplicationRepository {
-    public Completable addConference(Conference conference);
-    public Completable addTopic(Topic topic);
-    public Completable addSession(Session session);
-    public Completable addInvite(Invite invite);
+    Completable addConference(Conference conference);
+    Completable addTopic(Topic topic);
+    Completable addSession(Session session);
+    Completable addInvite(Invite invite);
 
     Completable addTopicToConference(int topicId, int conferenceId);
     Completable addSpeakerToSession(int userId, int sessionId);
@@ -30,5 +31,6 @@ public interface ApplicationRepository {
     Single<Conference> loadConferences(String conferenceId);
     Single<Session> loadSessions(String sessionId);
     Single<User> loadUsers(String userId);
+    Maybe<User> findUsersByUserName(String userName);
     Single<Topic> loadTopics(String topicId);
 }

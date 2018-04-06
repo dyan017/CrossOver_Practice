@@ -19,7 +19,7 @@ public abstract class ObservableUseCase<T, Params> {
     private final ThreadExecutor threadExecutor;
     private final PostExecutionThread postExecutionThread;
 
-    ObservableUseCase(ThreadExecutor executor, PostExecutionThread postThread) {
+    public ObservableUseCase(ThreadExecutor executor, PostExecutionThread postThread) {
         this.disposables = new CompositeDisposable();
         threadExecutor = executor;
         postExecutionThread = postThread;
@@ -28,18 +28,18 @@ public abstract class ObservableUseCase<T, Params> {
     /**
      * Builds an {@link Observable} which will be used when executing the current {@link ObservableUseCase}.
      */
-    abstract Observable<T> buildUseCaseObservable(Params params);
+    public abstract Observable<T> buildUseCase(Params params);
 
     /**
      * Executes the current use case.
      *
      * @param observer {@link DisposableObserver} which will be listening to the observable build
-     * by {@link #buildUseCaseObservable(Params)} ()} method.
+     * by {@link #buildUseCase(Params)} ()} method.
      * @param params Parameters (Optional) used to build/execute this use case.
      */
     public void execute(DisposableObserver<T> observer, Params params) {
         Preconditions.checkNotNull(observer);
-        final Observable<T> observable = this.buildUseCaseObservable(params);
+        final Observable<T> observable = this.buildUseCase(params);
         addDisposable(observable.subscribeOn(Schedulers.from(threadExecutor))
                 .subscribeOn(postExecutionThread.getScheduler())
                 .subscribeWith(observer));

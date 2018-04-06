@@ -9,7 +9,9 @@ import android.support.annotation.NonNull;
  */
 @Entity
 public class User {
-    @PrimaryKey @NonNull
-    public String UserId;
+    @PrimaryKey(autoGenerate = true) @NonNull
+    public int UserId;
     public UserType type;
+    public String UserName;
+    public String Password;
 }

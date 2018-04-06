@@ -18,12 +18,10 @@ import io.reactivex.schedulers.Schedulers;
  */
 
 public abstract class CompletableUseCase<Params> {
-    private final CompositeDisposable disposables;
     private final ThreadExecutor threadExecutor;
     private final PostExecutionThread postExecutionThread;
 
     public CompletableUseCase(ThreadExecutor executor, PostExecutionThread postThread) {
-        this.disposables = new CompositeDisposable();
         threadExecutor = executor;
         postExecutionThread = postThread;
     }
@@ -31,35 +29,18 @@ public abstract class CompletableUseCase<Params> {
     /**
      * Builds an {@link Completable} which will be used when executing the current {@link CompletableUseCase}.
      */
-    protected abstract Completable buildCompletableUseCase(Params params);
+    protected abstract Completable buildUseCase(Params params);
 
     /**
      * Executes the current use case.
      *
      * @param params Parameters (Optional) used to build/execute this use case.
      */
-    public void execute(Action onComplete, Consumer<? super Throwable> onError, Params params) {
-        final Completable completable= this.buildCompletableUseCase(params);
-        addDisposable(completable.subscribeOn(Schedulers.from(threadExecutor))
-                .subscribeOn(postExecutionThread.getScheduler())
-                .subscribe(onComplete, onError));
-    }
-
-    /**
-     * Dispose from current {@link CompositeDisposable}.
-     */
-    public void dispose() {
-        if (!disposables.isDisposed()) {
-            disposables.dispose();
-        }
-    }
-
-    /**
-     * Dispose from current {@link CompositeDisposable}.
-     */
-    private void addDisposable(Disposable disposable) {
-        Preconditions.checkNotNull(disposable);
-        Preconditions.checkNotNull(disposables);
-        disposables.add(disposable);
+    public Completable execute(Params params) {
+        final Completable completable= this.buildUseCase(params);
+        completable.subscribeOn(Schedulers.from(threadExecutor))
+                .subscribeOn(Schedulers.from(threadExecutor))
+                .observeOn(postExecutionThread.getScheduler());
+        return completable;
     }
 }

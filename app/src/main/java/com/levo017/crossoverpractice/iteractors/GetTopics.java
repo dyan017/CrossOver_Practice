@@ -25,7 +25,7 @@ public class GetTopics extends ObservableUseCase<List<Topic>, String> {
     }
 
     @Override
-    Observable<List<Topic>> buildUseCaseObservable(String TopicId) {
+    public Observable<List<Topic>> buildUseCase(String TopicId) {
         return null;
     }
 

@@ -21,7 +21,7 @@ public class AssignTopicToConference extends CompletableUseCase<AssignTopicToCon
     }
 
     @Override
-    protected Completable buildCompletableUseCase(AssignTopicToConference.Param param) {
+    protected Completable buildUseCase(AssignTopicToConference.Param param) {
         return repository.addTopicToConference(param.ConferenceId, param.TopicId);
     }
 

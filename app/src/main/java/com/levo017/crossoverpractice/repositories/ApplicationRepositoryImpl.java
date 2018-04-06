@@ -18,6 +18,7 @@ import javax.inject.Singleton;
 
 import dagger.Provides;
 import io.reactivex.Completable;
+import io.reactivex.Maybe;
 import io.reactivex.Single;
 
 /**
@@ -85,6 +86,9 @@ public class ApplicationRepositoryImpl implements ApplicationRepository {
     public Single<User> loadUsers(String userId) {
         return null;
     }
+
+    @Override
+    public Maybe<User> findUsersByUserName(String userName) { return null; }
 
     @Override
     public Single<Topic> loadTopics(String topicId) {

@@ -19,7 +19,7 @@ public class AddSpeakerToSession extends CompletableUseCase<AddSpeakerToSession.
     }
 
     @Override
-    protected Completable buildCompletableUseCase(Param param) {
+    protected Completable buildUseCase(Param param) {
         //retrieve the Session object
         return repository.addSpeakerToSession(param.UserId, param.SessionId);
     }
