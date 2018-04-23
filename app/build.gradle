@@ -3,8 +3,6 @@ apply plugin: 'com.android.application'
 android {
     def globalConfiguration = rootProject.extensions.getByName("ext")
 
-
-
     compileSdkVersion globalConfiguration["androidCompileSdkVersion"]
     buildToolsVersion globalConfiguration["androidBuildToolsVersion"]
 
@@ -21,6 +19,12 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
     }
 
     buildTypes {
@@ -62,6 +66,9 @@ dependencies {
     testCompile testDependencies.powermock_api
     testCompile testDependencies.junit
     testCompile 'com.github.fabioCollini.daggermock:daggermock:0.8.4'
+
+    testAnnotationProcessor  domainDependencies.daggerCompiler
+    testAnnotationProcessor  domainDependencies.daggerProcessor
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:appcompat-v7:26.1.0'

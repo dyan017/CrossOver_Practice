@@ -88,7 +88,7 @@ public class ApplicationRepositoryImpl implements ApplicationRepository {
     }
 
     @Override
-    public Maybe<User> findUsersByUserName(String userName) { return null; }
+    public Maybe<User> findUsersByUserName(String userName) { return Maybe.empty(); }
 
     @Override
     public Single<Topic> loadTopics(String topicId) {

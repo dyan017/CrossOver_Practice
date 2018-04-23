@@ -23,14 +23,16 @@ ext {
     archRoomRxjavaVersion = "1.0.0"
 
     //Testing
-    robolectricVersion = '3.3.2'
+    robolectricVersion = '3.1.1'
     jUnitVersion = '4.12'
     assertJVersion = '1.7.1'
     mockitoVersion = '1.9.5'
     hamcrestVersion = '1.3'
     powerMockito = '1.6.2'
-    espressoVersion = '2.0'
+    espressoVersion = '3.0.0'
     testingSupportLibVersion = '0.1'
+    androidSupportRunnerVersion = '1.0.0'
+    androidSupportRulesVersion = '1.0.0'
 
     domainDependencies = [
            rxjava:                  "io.reactivex.rxjava2:rxjava:${rxJavaVersion}",
@@ -62,5 +64,13 @@ ext {
             hamcrest:           "org.hamcrest:hamcrest-all:${hamcrestVersion}",
             powermock_junit:    "org.powermock:powermock-module-junit4:${powerMockito}",
             powermock_api:      "org.powermock:powermock-api-mockito:${powerMockito}"
+    ]
+
+    uiTestDependencies = [
+            espressoCore:       "com.android.support.test.espresso:espresso-core:${espressoVersion}",
+            espressoIntents:    "com.android.support.test.espresso:espresso-intents:${espressoVersion}",
+            espressoContrib:    "com.android.support.test.espresso:espresso-contrib:${espressoVersion}",
+            androidRunner: "com.android.support.test:runner:${androidSupportRunnerVersion}",
+            androidRules:  "com.android.support.test:rules:${androidSupportRulesVersion}"
     ]
 }

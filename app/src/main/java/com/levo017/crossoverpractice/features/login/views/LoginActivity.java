@@ -3,21 +3,16 @@ package com.levo017.crossoverpractice.features.login.views;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.app.LoaderManager.LoaderCallbacks;
-
-import android.content.CursorLoader;
-import android.content.Loader;
-import android.database.Cursor;
-import android.net.Uri;
-import android.os.AsyncTask;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -28,17 +23,19 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.levo017.crossoverpractice.R;
+import com.levo017.crossoverpractice.features.login.LoginViewModel;
 import com.levo017.crossoverpractice.features.login.LoginViewModelFactory;
+import com.levo017.crossoverpractice.resources.Resource;
+import com.levo017.crossoverpractice.resources.Status;
 
 import javax.inject.Inject;
 
 import dagger.android.AndroidInjection;
-import dagger.android.AndroidInjector;
 import dagger.android.support.DaggerAppCompatActivity;
 
 import static android.Manifest.permission.READ_CONTACTS;
@@ -46,7 +43,7 @@ import static android.Manifest.permission.READ_CONTACTS;
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends DaggerAppCompatActivity implements LoaderCallbacks<Cursor>, LoginView {
+public class LoginActivity extends DaggerAppCompatActivity implements LoginView {
 
     /**
      * Id to identity READ_CONTACTS permission request.
@@ -55,6 +52,8 @@ public class LoginActivity extends DaggerAppCompatActivity implements LoaderCall
 
     @Inject
     LoginViewModelFactory viewModelFactory;
+
+    LoginViewModel loginViewModel;
 
     // UI references.
     private AutoCompleteTextView mEmailView;
@@ -93,14 +92,41 @@ public class LoginActivity extends DaggerAppCompatActivity implements LoaderCall
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+
+        loginViewModel = ViewModelProviders.of(this, viewModelFactory).get(LoginViewModel.class);
+
+        loginViewModel.getLoadingStatus().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(@Nullable Boolean isLoading) {
+                showLoading(isLoading);
+            }
+        });
+
+        loginViewModel.getLoginResponse().observe(this, new Observer<Resource<Boolean>>() {
+            @Override
+            public void onChanged(@Nullable Resource<Boolean> loginResource) {
+                if (loginResource.status == Status.ERROR){
+                    mPasswordView.setError("Password Incorrect");
+                } else if(loginResource.status == Status.SUCCESS){
+                    // do Login successful.
+                }
+            }
+        });
+    }
+
+    @VisibleForTesting
+    void showLoading(boolean shown){
+        if (shown){
+            Toast.makeText(this, "is Loading", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(this, "finished Loading", Toast.LENGTH_LONG).show();
+        }
     }
 
     private void populateAutoComplete() {
         if (!mayRequestContacts()) {
             return;
         }
-
-        getLoaderManager().initLoader(0, null, this);
     }
 
     private boolean mayRequestContacts() {
@@ -174,6 +200,8 @@ public class LoginActivity extends DaggerAppCompatActivity implements LoaderCall
             cancel = true;
         }
 
+        loginViewModel.login(email, password);
+
         if (cancel) {
             // There was an error; don't attempt login and focus the first
             // form field with an error.
@@ -182,7 +210,6 @@ public class LoginActivity extends DaggerAppCompatActivity implements LoaderCall
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-
         }
     }
 
@@ -232,39 +259,6 @@ public class LoginActivity extends DaggerAppCompatActivity implements LoaderCall
         }
     }
 
-    @Override
-    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        return new CursorLoader(this,
-                // Retrieve data rows for the device user's 'profile' contact.
-                Uri.withAppendedPath(ContactsContract.Profile.CONTENT_URI,
-                        ContactsContract.Contacts.Data.CONTENT_DIRECTORY), ProfileQuery.PROJECTION,
-
-                // Select only email addresses.
-                ContactsContract.Contacts.Data.MIMETYPE +
-                        " = ?", new String[]{ContactsContract.CommonDataKinds.Email
-                .CONTENT_ITEM_TYPE},
-
-                // Show primary email addresses first. Note that there won't be
-                // a primary email address if the user hasn't specified one.
-                ContactsContract.Contacts.Data.IS_PRIMARY + " DESC");
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-        List<String> emails = new ArrayList<>();
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            emails.add(cursor.getString(ProfileQuery.ADDRESS));
-            cursor.moveToNext();
-        }
-
-        addEmailsToAutoComplete(emails);
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> cursorLoader) {
-
-    }
 
     private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
         //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
@@ -275,15 +269,5 @@ public class LoginActivity extends DaggerAppCompatActivity implements LoaderCall
         mEmailView.setAdapter(adapter);
     }
 
-
-    private interface ProfileQuery {
-        String[] PROJECTION = {
-                ContactsContract.CommonDataKinds.Email.ADDRESS,
-                ContactsContract.CommonDataKinds.Email.IS_PRIMARY,
-        };
-
-        int ADDRESS = 0;
-        int IS_PRIMARY = 1;
-    }
 }
 
